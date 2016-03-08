@@ -40,6 +40,8 @@
 \newcommand{\tx}[1]{\textnormal{#1}}
 \newcommand{\arr}{\rightarrow}
 
+\newcommand{\R}{\mathbb{R}}
+
 
 \newtheorem{Thm}{Theorem}
 \newtheorem{Lem}{Lemma}
@@ -58,11 +60,25 @@ In the paper "An Elementary Proof of a Theorem of Johnson and Lindenstrauss" ???
 Dimensionality reduction is an important tool in data analysis on a large scale, but can be unintuitive due to the large number of dimensions in which these transformations apply and are useful. The main insight of this paper is to first analyse the problem at high level making use of rotational invariance, so that the probabilistic analysis can be performed in a much simplier setting.
 
 \section{Dimensionality Reduction}
+In data analysis we often want to produce summary information to describe a large data set. A natural extension of this is to ask whether we can find a smaller repesentation of our data which preserves the overall structure. In many cases our data can be represented as a set of points, $V$ in some high dimensional euclidean space $\R^d$.
+
+
+A common problem in data analysis is to produce summary information to describe a large data set in a smaller form.
+
+-- Dimension reduction vs summary information.
+
 -- what a dimension reduction would look like
 -- what kinds of properties we might be interested in preserving
 -- the role of randomness (i.e. avoiding selecting features, ease of use, streaming computation)
 
 \section{The Johnson Lindenstrauss Theorem}
+\begin{Thm}
+    For any $0 \leq \epsilon \leq 1$, and any integer $n$, let $k$ be a positive integer such that
+    \[ k \geq 4(\epsilon^2/2 - \epsilon^3/3)^{-1} \ln n \]
+    Then for any set of $n$ points $V \subseteq \R^d$, there exists a map $f:\R^d \arr R^k$ such that for all $u, v \in V$
+    \[(1-\epsilon)\|u - v\|^2 \leq \| f(u) - f(v) \|^2 \leq (1+\epsilon) \| u - v \|^2 \]
+    Furthermore, this map can be found in randomized polynomial time.
+\end{Thm}
 -- Statement of the theorem
 -- Contextualization of variables
 -- Intution, when projected length is tightly concentrated around mean
