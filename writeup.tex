@@ -19,7 +19,7 @@
 %==============================================================================
 % Page Setup {{{
 %==============================================================================
-\author{Will Kochanski}
+\author{Eli Rosenthal \and Will Kochanski}
 \date{}
 
 \setlength{\parindent}{0pt}
@@ -53,6 +53,42 @@
 %==============================================================================
 \maketitle
 \section{Introduction}
+In the paper "An Elementary Proof of a Theorem of Johnson and Lindenstrauss" ???ref Dasgupta and Gupta reprove a major dimensionality reduction result of Johnson and Lindenstrauss (???year). Their approach is interesting for the simplicity of its presentation and use of relatively elementary probabilistic techniques.
+
+Dimensionality reduction is an important tool in data analysis on a large scale, but can be unintuitive due to the large number of dimensions in which these transformations apply and are useful. The main insight of this paper is to first analyse the problem at high level making use of rotational invariance, so that the probabilistic analysis can be performed in a much simplier setting.
+
+\section{Dimensionality Reduction}
+-- what a dimension reduction would look like
+-- what kinds of properties we might be interested in preserving
+-- the role of randomness (i.e. avoiding selecting features, ease of use, streaming computation)
+
+\section{The Johnson Lindenstrauss Theorem}
+-- Statement of the theorem
+-- Contextualization of variables
+-- Intution, when projected length is tightly concentrated around mean
+
+-- Intuition for a random projection
+-- rotational invariance, linear scaling, allows us to analyse a random vector.
+
+\subsection{Sampling from the Unit Sphere}
+-- Why it might be difficult
+-- first attempt using polar coordinates
+
+-- Key realization: We can impose constraints *after* sampling
+   -- all we need is a rotationally symmetric distribution
+-- Enter gaussians, why do they work.
+-- Other key advantage: Now each component is i.i.d
+    -- Makes projection very easy to reason about.
+
+\section{Large Deviation Bounds}
+-- Remains to analyse the result of the projetion
+-- Probabilistic method, low failure for each distance, take union bound, repeat until success to get
+-- randomized algorithms
+
+??? how much detail into math do we want to give?
+
+
+
 Dimensionality reduction is an important 
 - why we care about DR
 - in particular, this version is pretty cool
@@ -63,10 +99,6 @@ Dimensionality reduction is an important
 - are gaussians always the answer?
 showing why the gaussian stuff is rotationally invariant
 - talking about chernoff bounds
-\section{Background}
-\section{Polynomial Security}
-
-\section{Semantic Security} 
 
 \begin{thebibliography}{1}
     \bibitem{mainpaper} \ir{S. Goldwasser and S. Mitecali} (1984), "Probabilistic Encryption", in \textit{Journal of Computer and System Sciences}, vol. 28(2), pp. 270-299
