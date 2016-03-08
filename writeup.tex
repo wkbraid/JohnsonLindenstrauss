@@ -1,0 +1,75 @@
+\documentclass[11pt]{article}
+%==============================================================================
+% Basic Packages {{{ 
+%==============================================================================
+\usepackage{mathpazo}
+\usepackage[top=2cm, bottom=3.5cm, left=2.5cm, right=2.5cm]{geometry}
+
+\usepackage{graphicx}                               %insert images
+\usepackage{verbatim}                               %include txt files
+
+\usepackage{amsmath,amsfonts,amssymb,amsthm}        %basic math support
+\usepackage{tikz-cd}                                %draw commutative diagrams
+\usetikzlibrary{graphs}                             %draw graphs with tikz
+\usepackage{bussproofs}                             %proof trees
+\usepackage{algorithm,algpseudocode}                %pseudocode algorithms
+
+% }}}
+
+%==============================================================================
+% Page Setup {{{
+%==============================================================================
+\author{Will Kochanski}
+\date{}
+
+\setlength{\parindent}{0pt}
+% }}}
+
+%==============================================================================
+% Macros {{{
+%==============================================================================
+\newcommand{\img}[1]{\begin{center}
+    \includegraphics[width=0.8\textwidth]{#1}
+\end{center}}
+
+\newenvironment{bprooftree}
+    {\leavevmode\hbox\bgroup}
+    {\DisplayProof\egroup}
+
+\newcommand{\ir}[1]{\textnormal{\sc#1}}
+\newcommand{\tx}[1]{\textnormal{#1}}
+\newcommand{\arr}{\rightarrow}
+
+
+\newtheorem{Thm}{Theorem}
+\newtheorem{Lem}{Lemma}
+\newtheorem{Cor}{Corollary}
+% }}}
+
+\title{Paper Summary: Probabilistic Encryption}
+\begin{document}
+%==============================================================================
+% Begin Document
+%==============================================================================
+\maketitle
+\section{Introduction}
+Dimensionality reduction is an important 
+- why we care about DR
+- in particular, this version is pretty cool
+
+- rotational invariance of the joint distribution, 
+- how do we go about vvv 
+- sampling from a smooth surface
+- are gaussians always the answer?
+showing why the gaussian stuff is rotationally invariant
+- talking about chernoff bounds
+\section{Background}
+\section{Polynomial Security}
+
+\section{Semantic Security} 
+
+\begin{thebibliography}{1}
+    \bibitem{mainpaper} \ir{S. Goldwasser and S. Mitecali} (1984), "Probabilistic Encryption", in \textit{Journal of Computer and System Sciences}, vol. 28(2), pp. 270-299
+        
+\end{thebibliography}
+\end{document}
