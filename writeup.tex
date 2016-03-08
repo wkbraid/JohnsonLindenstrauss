@@ -60,14 +60,20 @@ In the paper "An Elementary Proof of a Theorem of Johnson and Lindenstrauss" ???
 Dimensionality reduction is an important tool in data analysis on a large scale, but can be unintuitive due to the large number of dimensions in which these transformations apply and are useful. The main insight of this paper is to first analyse the problem at high level making use of rotational invariance, so that the probabilistic analysis can be performed in a much simplier setting.
 
 \section{Dimensionality Reduction}
-In data analysis we often want to produce summary information to describe a large data set. A natural extension of this is to ask whether we can find a smaller repesentation of our data which preserves the overall structure. In many cases our data can be represented as a set of points, $V$ in some high dimensional euclidean space $\R^d$.
+In data analysis we often want to produce summary information to describe a large data set. A natural extension of this is to ask whether we can find a smaller repesentation of our data which preserves the overall structure. In many cases our data can be represented as a set of points, $V$, in some high dimensional euclidean space, $\R^d$. In this setting we ask whether there is a linear map
+\[ f : \R^d \arr \R^k \]
+To some lower dimensional space without distorting the data too much. Intuitively we can think of this as choosing $k$ features to represent our data, and discarding everything else. For example the data set visualized here
+
+??? picture of two dimensional data set with primary axis
+
+Can be represented almost faithfully by projecting onto the one dimensional space represented by the central line. The surprising result of Johnson and Lindenstrauss is that in high enough dimensions 
 
 
-A common problem in data analysis is to produce summary information to describe a large data set in a smaller form.
 
--- Dimension reduction vs summary information.
+\section{Not a real section}
 
--- what a dimension reduction would look like
+
+
 -- what kinds of properties we might be interested in preserving
 -- the role of randomness (i.e. avoiding selecting features, ease of use, streaming computation)
 
@@ -75,7 +81,7 @@ A common problem in data analysis is to produce summary information to describe 
 \begin{Thm}
     For any $0 \leq \epsilon \leq 1$, and any integer $n$, let $k$ be a positive integer such that
     \[ k \geq 4(\epsilon^2/2 - \epsilon^3/3)^{-1} \ln n \]
-    Then for any set of $n$ points $V \subseteq \R^d$, there exists a map $f:\R^d \arr R^k$ such that for all $u, v \in V$
+    Then for any set of $n$ points $V \subseteq \R^d$, there exists a map $f:\R^d \arr \R^k$ such that for all $u, v \in V$
     \[(1-\epsilon)\|u - v\|^2 \leq \| f(u) - f(v) \|^2 \leq (1+\epsilon) \| u - v \|^2 \]
     Furthermore, this map can be found in randomized polynomial time.
 \end{Thm}
