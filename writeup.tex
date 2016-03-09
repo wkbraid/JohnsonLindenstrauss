@@ -63,67 +63,134 @@ Their approach is interesting for the simplicity of its presentation and use of
 relatively elementary probabilistic techniques.
 
 \section{Dimensionality Reduction}
-In data analysis we often want to produce summary information to describe a large data set. A natural extension of this is to ask whether we can find a smaller repesentation of our data which preserves the overall structure. In many cases our data can be represented as a set of points, $V$, in some high dimensional euclidean space, $\R^d$. In this setting we ask whether there is a linear map
-\[ f : \R^d \arr \R^k \]
-To some lower dimensional space without distorting the data too much. Intuitively we can think of this as choosing $k$ features to represent our data, and discarding everything else. For example the data set visualized here
 
-\section{Dimensionality Reduction}
+In data analysis we often want to produce summary information to describe a
+large data set. A natural extension of this is to ask whether we can find a
+smaller repesentation of our data which preserves the overall structure. In many
+cases our data can be represented as a set of points, $V$, in some high
+dimensional euclidean space, $\R^d$. In this setting we ask whether there is a
+linear map
+
+\[ 
+  f : \R^d \arr \R^k 
+\]
+
+To some lower dimensional space without distorting the data too much.
+Intuitively we can think of this as choosing $k$ features to represent our data,
+and discarding everything else. For example the data set visualized here
+
 In data analysis we often want to produce summary information to describe a
 large data set. A natural extension of this is to ask whether we can find a
 smaller repesentation of our data which preserves the overall structure. In many
 cases our data can be represented as a set of points, $V$ in some high
 dimensional euclidean space $\R^d$.
->>>>>>> updated spheres, modified writeup format
 
 \begin{center}
     \includegraphics[trim=0 240 0 280, clip,width=0.7\textwidth]{2dprimaryaxis.pdf}
 \end{center}
 
-Can be represented almost faithfully by projecting onto the one dimensional space represented by the central line. The surprising result of Johnson and Lindenstrauss is that in high enough dimensions we can choose a \textit{random} projection without distorting the data too much.
-
+Can be represented almost faithfully by projecting onto the one dimensional
+space represented by the central line. The maximum deviation is roughly the
+height of the bounding ellipse of the point cloud. The surprising result of
+Johnson and Lindenstrauss is that in high enough dimensions we can choose a
+\textit{random} projection without distorting the data too much.
 
 \section{The Johnson Lindenstrauss Theorem}
+
 \begin{Thm}
 
-    For any $0 \leq \epsilon \leq 1$, and any integer $n$, let $k$ be a positive
-    integer such that
-    \[ 
-      k \geq 4(\epsilon^2/2 - \epsilon^3/3)^{-1} \ln n 
-    \]
-    Then for any set of $n$ points $V \subseteq \R^d$, there exists a map
-    $f:\R^d \arr R^k$ such that for all $u, v \in V$
-    \[
-      (1-\epsilon)\|u - v\|^2 \leq \| f(u) - f(v) \|^2 \leq (1+\epsilon) \| u - v \|^2 
-    \]
-    Furthermore, this map can be found in randomized polynomial time.
+  For any $0 \leq \epsilon \leq 1$, and any integer $n$, let $k$ be a positive
+  integer such that
+  \[ 
+    k \geq 4(\epsilon^2/2 - \epsilon^3/3)^{-1} \ln n 
+  \]
+  Then for any set of $n$ points $V \subseteq \R^d$, there exists a map
+  $f:\R^d \arr R^k$ such that for all $u, v \in V$
+  \[
+    (1-\epsilon)\|u - v\|^2 \leq \| f(u) - f(v) \|^2 \leq (1+\epsilon) \| u - v \|^2 
+  \]
+  Furthermore, this map can be found in randomized polynomial time.
+
 \end{Thm}
+
+The statement of the theorem is rather interesting: the bounds we get on
+distortion are in terms of $\epsilon$ which is in turn bounded in terms of $k$
+and $n$ but not $d$. This is the first clue that we are dealing with some sort
+of random algorithm. This algorithm is roughly the following: pick a unit vector
+of length $k$ from some Gaussian distribution. Then pick $n-1$ additional random
+unit vectors that are orthogonal to this first vector: left-multiplying a vector
+in $n$ dimensions by this new matrix yields a point in $\mathbb{R}^k$.
 
 -- Statement of the theorem
 -- Contextualization of variables
--- Intution, when projected length is tightly concentrated around mean
+-- Intuition, when projected length is tightly concentrated around mean
 
 -- Intuition for a random projection
 -- rotational invariance, linear scaling, allows us to analyse a random vector.
 
 \subsection{Sampling from the Unit Sphere}
+
+Doing this is not exactly obvious, we have provided a few ways
+(Figure~\ref{fig:spheres}) that one might sample from the unit sphere $S^n$, and
+the obvious ways aren't uniform!
+
+\begin{figure}
+  \begin{center}
+    \includegraphics[width=0.9\linewidth]{spheres.png}
+  \end{center}
+
+  \caption{Randomly sampling a sphere with spherical coordinates, cubical
+    coordinates, and a normal distribution. Note that only a normal distribution
+    is free of spots with greater and lower density}
+  \label{fig:spheres}
+\end{figure}
+
 -- Why it might be difficult
 -- first attempt using polar coordinates
 
 -- Key realization: We can impose constraints *after* sampling
-   -- all we need is a rotationally symmetric distribution
+
+   -- all we need is a rotationally symmetric distribution, so we can ``rotate
+   it back''
+
 -- Enter gaussians, why do they work.
--- Other key advantage: Now each component is i.i.d
+
+-- Other key advantage: Now each component is i.i.d (see Figure~\ref{fig:bounds})
+
     -- Makes projection very easy to reason about.
 
+    \begin{figure}[H]
+      So you're sampling from some distribution, and you want to know how fast
+      you converge to ground truth.
+
+      \begin{tabular}{lll}
+        What do you know? & Distribution & Tail bound\\
+        \hline
+        I know something about the mean..  & Markov! & Linear \\
+        I know something about the variance..  & Chebyshev! & quadratic/polynomial\\
+        My samples are i.i.d.  & Chernoff! & \emph{Exponential}\\
+        \hline
+      \end{tabular}
+      \caption{Sampling cheat sheet}
+      \label{fig:bounds}
+    \end{figure}
+
 \section{Large Deviation Bounds}
+
 -- Remains to analyse the result of the projetion
--- Probabilistic method, low failure for each distance, take union bound, repeat until success to get
+
+-- Probabilistic method, low failure for each distance, take union bound, repeat
+until success to get
+
 -- randomized algorithms
 
-??? how much detail into math do we want to give?
+\emph{Q:} how much detail into math do we want to give?
+\emph{A:} Not much, I don't think this is the interesting part of the paper
 
 
 \section{Comparison to other Approaches}
+TODO: we may not need this; we already have a lot of pages covered...
+
 -- what kinds of properties we might be interested in preserving
 -- the role of randomness (i.e. avoiding selecting features, ease of use, streaming computation)
 

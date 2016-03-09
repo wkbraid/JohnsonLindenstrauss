@@ -3,7 +3,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
-from math import (cos,sin, pi)
+from math import (cos,sin, pi, sqrt)
 import random
 
 N = 30000
@@ -33,5 +33,19 @@ run_graph(222, points2,'Gaussians! (norm of $(x,y,z) \leftarrow \mathcal{N}(0,1)
 # uniformly from the cube
 points3 = np.array([tuple(a / np.linalg.norm(a)) for a in np.random.uniform(-1,1, (N,3))])
 run_graph(223, points3,'Cube! (norm of $(x,y,z) \leftarrow U(-1,1))$')
+
+def achlioptas_dist():
+    coin = random.uniform(0,1)
+    rc = 0
+    if coin >= (5.0/6.0):
+        rc = 1
+    elif coin <= (1.0/6.0):
+        rc = -1
+    return sqrt(3) * float(rc)
+
+points4 = np.array([tuple(a / np.linalg.norm(a)) for a 
+    in (np.array([achlioptas_dist(), achlioptas_dist(), achlioptas_dist()]) for r in xrange(N))])
+
+run_graph(224, points4, 'Weird Distribution')
 
 plt.savefig('spheres.png')
