@@ -57,25 +57,20 @@
 \section{Introduction}
 In the paper "An Elementary Proof of a Theorem of Johnson and Lindenstrauss" ???ref Dasgupta and Gupta reprove a major dimensionality reduction result of Johnson and Lindenstrauss (???year). Their approach is interesting for the simplicity of its presentation and use of relatively elementary probabilistic techniques.
 
-Dimensionality reduction is an important tool in data analysis on a large scale, but can be unintuitive due to the large number of dimensions in which these transformations apply and are useful. The main insight of this paper is to first analyse the problem at high level making use of rotational invariance, so that the probabilistic analysis can be performed in a much simplier setting.
+%Dimensionality reduction is an important tool in data analysis on a large scale, but can be unintuitive due to the large number of dimensions in which these transformations apply and are useful. The main insight of this paper is to first analyse the problem at high level making use of rotational invariance, so that the probabilistic analysis can be performed in a much simplier setting.
 
 \section{Dimensionality Reduction}
 In data analysis we often want to produce summary information to describe a large data set. A natural extension of this is to ask whether we can find a smaller repesentation of our data which preserves the overall structure. In many cases our data can be represented as a set of points, $V$, in some high dimensional euclidean space, $\R^d$. In this setting we ask whether there is a linear map
 \[ f : \R^d \arr \R^k \]
 To some lower dimensional space without distorting the data too much. Intuitively we can think of this as choosing $k$ features to represent our data, and discarding everything else. For example the data set visualized here
 
-??? picture of two dimensional data set with primary axis
+\begin{center}
+    \includegraphics[trim=0 240 0 280, clip,width=0.7\textwidth]{2dprimaryaxis.pdf}
+\end{center}
 
-Can be represented almost faithfully by projecting onto the one dimensional space represented by the central line. The surprising result of Johnson and Lindenstrauss is that in high enough dimensions 
-
-
-
-\section{Not a real section}
+Can be represented almost faithfully by projecting onto the one dimensional space represented by the central line. The surprising result of Johnson and Lindenstrauss is that in high enough dimensions we can choose a \textit{random} projection without distorting the data too much.
 
 
-
--- what kinds of properties we might be interested in preserving
--- the role of randomness (i.e. avoiding selecting features, ease of use, streaming computation)
 
 \section{The Johnson Lindenstrauss Theorem}
 \begin{Thm}
@@ -110,6 +105,12 @@ Can be represented almost faithfully by projecting onto the one dimensional spac
 ??? how much detail into math do we want to give?
 
 
+\section{Comparison to other Approaches}
+-- what kinds of properties we might be interested in preserving
+-- the role of randomness (i.e. avoiding selecting features, ease of use, streaming computation)
+
+
+\section{Initial notes}
 
 Dimensionality reduction is an important 
 - why we care about DR
