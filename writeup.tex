@@ -7,6 +7,7 @@
 
 \usepackage{graphicx}                               %insert images
 \usepackage{verbatim}                               %include txt files
+\usepackage{cite}
 
 \usepackage{amsmath,amsfonts,amssymb,amsthm}        %basic math support
 \usepackage{tikz-cd}                                %draw commutative diagrams
@@ -55,14 +56,24 @@
 %==============================================================================
 \maketitle
 \section{Introduction}
-In the paper "An Elementary Proof of a Theorem of Johnson and Lindenstrauss" ???ref Dasgupta and Gupta reprove a major dimensionality reduction result of Johnson and Lindenstrauss (???year). Their approach is interesting for the simplicity of its presentation and use of relatively elementary probabilistic techniques.
-
-%Dimensionality reduction is an important tool in data analysis on a large scale, but can be unintuitive due to the large number of dimensions in which these transformations apply and are useful. The main insight of this paper is to first analyse the problem at high level making use of rotational invariance, so that the probabilistic analysis can be performed in a much simplier setting.
+In the paper ``An Elementary Proof of a Theorem of Johnson and
+Lindenstrauss''~\cite{mainpaper}  Dasgupta and Gupta reprove a major
+dimensionality reduction result of Johnson and Lindenstrauss in~\cite{oldpaper}.
+Their approach is interesting for the simplicity of its presentation and use of
+relatively elementary probabilistic techniques.
 
 \section{Dimensionality Reduction}
 In data analysis we often want to produce summary information to describe a large data set. A natural extension of this is to ask whether we can find a smaller repesentation of our data which preserves the overall structure. In many cases our data can be represented as a set of points, $V$, in some high dimensional euclidean space, $\R^d$. In this setting we ask whether there is a linear map
 \[ f : \R^d \arr \R^k \]
 To some lower dimensional space without distorting the data too much. Intuitively we can think of this as choosing $k$ features to represent our data, and discarding everything else. For example the data set visualized here
+
+\section{Dimensionality Reduction}
+In data analysis we often want to produce summary information to describe a
+large data set. A natural extension of this is to ask whether we can find a
+smaller repesentation of our data which preserves the overall structure. In many
+cases our data can be represented as a set of points, $V$ in some high
+dimensional euclidean space $\R^d$.
+>>>>>>> updated spheres, modified writeup format
 
 \begin{center}
     \includegraphics[trim=0 240 0 280, clip,width=0.7\textwidth]{2dprimaryaxis.pdf}
@@ -71,15 +82,22 @@ To some lower dimensional space without distorting the data too much. Intuitivel
 Can be represented almost faithfully by projecting onto the one dimensional space represented by the central line. The surprising result of Johnson and Lindenstrauss is that in high enough dimensions we can choose a \textit{random} projection without distorting the data too much.
 
 
-
 \section{The Johnson Lindenstrauss Theorem}
 \begin{Thm}
-    For any $0 \leq \epsilon \leq 1$, and any integer $n$, let $k$ be a positive integer such that
-    \[ k \geq 4(\epsilon^2/2 - \epsilon^3/3)^{-1} \ln n \]
-    Then for any set of $n$ points $V \subseteq \R^d$, there exists a map $f:\R^d \arr \R^k$ such that for all $u, v \in V$
-    \[(1-\epsilon)\|u - v\|^2 \leq \| f(u) - f(v) \|^2 \leq (1+\epsilon) \| u - v \|^2 \]
+
+    For any $0 \leq \epsilon \leq 1$, and any integer $n$, let $k$ be a positive
+    integer such that
+    \[ 
+      k \geq 4(\epsilon^2/2 - \epsilon^3/3)^{-1} \ln n 
+    \]
+    Then for any set of $n$ points $V \subseteq \R^d$, there exists a map
+    $f:\R^d \arr R^k$ such that for all $u, v \in V$
+    \[
+      (1-\epsilon)\|u - v\|^2 \leq \| f(u) - f(v) \|^2 \leq (1+\epsilon) \| u - v \|^2 
+    \]
     Furthermore, this map can be found in randomized polynomial time.
 \end{Thm}
+
 -- Statement of the theorem
 -- Contextualization of variables
 -- Intution, when projected length is tightly concentrated around mean
@@ -122,9 +140,7 @@ Dimensionality reduction is an important
 - are gaussians always the answer?
 showing why the gaussian stuff is rotationally invariant
 - talking about chernoff bounds
+\bibliography{refs}{}
+\bibliographystyle{plain}
 
-\begin{thebibliography}{1}
-    \bibitem{mainpaper} \ir{S. Goldwasser and S. Mitecali} (1984), "Probabilistic Encryption", in \textit{Journal of Computer and System Sciences}, vol. 28(2), pp. 270-299
-        
-\end{thebibliography}
 \end{document}
