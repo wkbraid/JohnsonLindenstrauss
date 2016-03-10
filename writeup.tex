@@ -7,6 +7,7 @@
 
 \usepackage{graphicx}                               %insert images
 \usepackage{verbatim}                               %include txt files
+\usepackage{cite}
 
 \usepackage{amsmath,amsfonts,amssymb,amsthm}        %basic math support
 \usepackage{tikz-cd}                                %draw commutative diagrams
@@ -54,72 +55,116 @@
 % Begin Document
 %==============================================================================
 \maketitle
-\section*{Voyage 1}
-You have a database with a lot of entries -- thousands of entries -- enough entries that the number $n$ seems like a deceptively small way to describe how many there are. You checked and for each entry someone went and put $d$ numbers in there to describe it, you don't even know what some of those numbers mean. Begrudingly you admit that things would be a little more organized if you though of each entry as a point in a high dimensional space: $\R^d$. \\
-
-Sometimes people ask and you give them 
-
-for a grand total of some $n\times d$ numbers. Begrudingly you admit that things would be a little more organized if you though of each entry as a point in high dimensional
-
-Now you've checked and for each entry someone went and $d$ numbers
-
-
 \section{Introduction}
+In data analysis we often want to produce summary information to concisely describe \textit{static} and \textit{global} properties of a large data set. However, for some operations most if not all of the structure in the original data is needed; consider removing outliers from a dataset, or finding the nearest neighbor to a given point. Many queries like this are either \textit{dynamic} and change the shape of the data, or \textit{local} and need to differentiate between different parts of the dataset. To perform these operations efficiently we need to reduce the size of our representation, while preserving the structure of our data, an example of this is \textbf{Dimensionality Reduction}.
 
-Now you've checked and for every one of those entries in the database
-
-
-In the paper "An Elementary Proof of a Theorem of Johnson and Lindenstrauss" ???ref Dasgupta and Gupta reprove a major dimensionality reduction result of Johnson and Lindenstrauss (???year). Their approach is interesting for the simplicity of its presentation and use of relatively elementary probabilistic techniques.
-
-Dimensionality reduction is an important tool in data analysis on a large scale, but can be unintuitive due to the large number of dimensions in which these transformations apply and are useful. The main insight of this paper is to first analyse the problem at high level making use of rotational invariance, so that the probabilistic analysis can be performed in a much simplier setting.
-
-\section{Dimensionality Reduction}
-In data analysis we often want to produce summary information to describe a large data set. A natural extension of this is to ask whether we can find a smaller repesentation of our data which preserves the overall structure. In many cases our data can be represented as a set of points, $V$, in some high dimensional euclidean space, $\R^d$. In this setting we ask whether there is a linear map
-\[ f : \R^d \arr \R^k \]
-To some lower dimensional space without distorting the data too much. Intuitively we can think of this as choosing $k$ features to represent our data, and discarding everything else. For example the data set visualized here
+\section{Dealing with High Dimensions}
+Many data sets, such as a collection of photographs, can be described formally as a set of points in euclidean space; with each coordinate storing the intensity of a given pixel. In low dimensions we can often differentiate between datasets which behave well under projection, and datasets which do not. Consider the two figures below:
 
 \begin{center}
-    \includegraphics[trim=0 240 0 280, clip,width=0.7\textwidth]{2dprimaryaxis.pdf}
+    \includegraphics[trim=0 280 0 280, clip,width=\textwidth]{2dplots.pdf}
 \end{center}
 
-Can be represented almost faithfully by projecting onto the one dimensional space represented by the central line. The surprising result of Johnson and Lindenstrauss is that in high enough dimensions we can choose a \textit{random} projection without distorting the data too much.
+The set on the left can be represented almost faithfully by projecting onto the one dimensional space represented by the central line, relative distances will be roughly preserved with the largest deviation near the center of the bounding ellipse. On the right, however, there is no good line to project onto; no matter what we choose we will have to collapse many disperse points to the same neighborhood. 
 
-
+The surprising result of Johnson and Lindenstrauss \cite{oldpaper} is that in high enough dimensions there is no such distinction. In fact, by projecting onto a \textit{random} subspace we can reduce the dimension without significantly distorting pairwise distance.
 
 \section{The Johnson Lindenstrauss Theorem}
+
 \begin{Thm}
-    For any $0 \leq \epsilon \leq 1$, and any integer $n$, let $k$ be a positive integer such that
-    \[ k \geq 4(\epsilon^2/2 - \epsilon^3/3)^{-1} \ln n \]
-    Then for any set of $n$ points $V \subseteq \R^d$, there exists a map $f:\R^d \arr \R^k$ such that for all $u, v \in V$
-    \[(1-\epsilon)\|u - v\|^2 \leq \| f(u) - f(v) \|^2 \leq (1+\epsilon) \| u - v \|^2 \]
-    Furthermore, this map can be found in randomized polynomial time.
+
+  For any $0 \leq \epsilon \leq 1$, and any integer $n$, let $k$ be a positive
+  integer such that
+  \[ 
+    k \geq 4(\epsilon^2/2 - \epsilon^3/3)^{-1} \ln n 
+  \]
+  Then for any set of $n$ points $V \subseteq \R^d$, there exists a map
+  $f:\R^d \arr R^k$ such that for all $u, v \in V$
+  \[
+    (1-\epsilon)\|u - v\|^2 \leq \| f(u) - f(v) \|^2 \leq (1+\epsilon) \| u - v \|^2 
+  \]
+  Furthermore, this map can be found in randomized polynomial time.
+
 \end{Thm}
+
+The statement of the theorem is rather interesting: the bounds we get on
+distortion are in terms of $\epsilon$ which is in turn bounded in terms of $k$
+and $n$ but not $d$. This is the first clue that we are dealing with some sort
+of random algorithm. This algorithm is roughly the following: pick a unit vector
+of length $k$ from some Gaussian distribution. Then pick $n-1$ additional random
+unit vectors that are orthogonal to this first vector: left-multiplying a vector
+in $n$ dimensions by this new matrix yields a point in $\mathbb{R}^k$.
+
 -- Statement of the theorem
 -- Contextualization of variables
--- Intution, when projected length is tightly concentrated around mean
+-- Intuition, when projected length is tightly concentrated around mean
 
 -- Intuition for a random projection
 -- rotational invariance, linear scaling, allows us to analyse a random vector.
 
 \subsection{Sampling from the Unit Sphere}
+
+Doing this is not exactly obvious, we have provided a few ways
+(Figure~\ref{fig:spheres}) that one might sample from the unit sphere $S^n$, and
+the obvious ways aren't uniform!
+
+\begin{figure}
+  \begin{center}
+    \includegraphics[width=0.9\linewidth]{spheres.png}
+  \end{center}
+
+  \caption{Randomly sampling a sphere with spherical coordinates, cubical
+    coordinates, and a normal distribution. Note that only a normal distribution
+    is free of spots with greater and lower density}
+  \label{fig:spheres}
+\end{figure}
+
 -- Why it might be difficult
 -- first attempt using polar coordinates
 
 -- Key realization: We can impose constraints *after* sampling
-   -- all we need is a rotationally symmetric distribution
+
+   -- all we need is a rotationally symmetric distribution, so we can ``rotate
+   it back''
+
 -- Enter gaussians, why do they work.
--- Other key advantage: Now each component is i.i.d
+
+-- Other key advantage: Now each component is i.i.d (see Figure~\ref{fig:bounds})
+
     -- Makes projection very easy to reason about.
 
+    \begin{figure}[H]
+      So you're sampling from some distribution, and you want to know how fast
+      you converge to ground truth.
+
+      \begin{tabular}{lll}
+        What do you know? & Distribution & Tail bound\\
+        \hline
+        I know something about the mean..  & Markov! & Linear \\
+        I know something about the variance..  & Chebyshev! & quadratic/polynomial\\
+        My samples are i.i.d.  & Chernoff! & \emph{Exponential}\\
+        \hline
+      \end{tabular}
+      \caption{Sampling cheat sheet}
+      \label{fig:bounds}
+    \end{figure}
+
 \section{Large Deviation Bounds}
+
 -- Remains to analyse the result of the projetion
--- Probabilistic method, low failure for each distance, take union bound, repeat until success to get
+
+-- Probabilistic method, low failure for each distance, take union bound, repeat
+until success to get
+
 -- randomized algorithms
 
-??? how much detail into math do we want to give?
+\emph{Q:} how much detail into math do we want to give?
+\emph{A:} Not much, I don't think this is the interesting part of the paper
 
 
 \section{Comparison to other Approaches}
+TODO: we may not need this; we already have a lot of pages covered...
+
 -- what kinds of properties we might be interested in preserving
 -- the role of randomness (i.e. avoiding selecting features, ease of use, streaming computation)
 
@@ -136,9 +181,7 @@ Dimensionality reduction is an important
 - are gaussians always the answer?
 showing why the gaussian stuff is rotationally invariant
 - talking about chernoff bounds
+\bibliography{refs}{}
+\bibliographystyle{plain}
 
-\begin{thebibliography}{1}
-    \bibitem{mainpaper} \ir{S. Goldwasser and S. Mitecali} (1984), "Probabilistic Encryption", in \textit{Journal of Computer and System Sciences}, vol. 28(2), pp. 270-299
-        
-\end{thebibliography}
 \end{document}
