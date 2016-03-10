@@ -75,7 +75,6 @@ Formally we are interested in the distortion of \textit{pairwise distance}. If t
 Measures how the distance between the two points changes under the projection. By capturing pairwise distances we can imagine preserving a rigid skeleton of our data from which further information such as the angles between points can be deduced. Moreover, distortion is indepedent of the absolute scale and position of the data, which allows both large and small features such as ``clumps'' to be preserved. The main theorem presented in this paper \cite{mainpaper} is that we can choose $k$ large enough such that \textit{no} pairwise distance will be distored by more than a constant factor.
 
 \begin{Thm}
-
   For any $0 \leq \epsilon \leq 1$, and any integer $n$, let $k$ be a positive
   integer such that
   \[ 
@@ -87,8 +86,22 @@ Measures how the distance between the two points changes under the projection. B
     (1-\epsilon)\|u - v\|^2 \leq \| f(u) - f(v) \|^2 \leq (1+\epsilon) \| u - v \|^2 
   \]
   Furthermore, this map can be found in randomized polynomial time.
-
 \end{Thm}
+
+Here $\epsilon$ is a tolerance parameter which captures how much distortion we are willing to accept for any pair of points. If we fix $\epsilon = 0.1$ then this theorem says that we can represent a dataset of $n$ points in about $1000 \ln n$ dimensions with no more than 10\% distortion on any pair. At first it may seem surprising that the target dimension $k$ is bounded by $n$ and \textbf{not} the source dimension $d$. One view is that since we only concerned with \textit{relative} distances between points we can always rotate our data to fit in $n$ dimensions, so all we need is to produce a map $\R^n \arr \R^k$. A more subtle perspective comes from answering the question: What does it mean that this map can be found in randomized polynomial time?
+
+This paper presents a simple \textit{randomized} algorithm: choose a random projection and check whether the distortion is bounded, keep trying until it works. The chance that something goes wrong is related to the number of pairwise distances 
+
+
+-- summarize algorithm
+
+-- conclude that we need to analyze what happens when a vector is projected to a random subspace
+
+-- Start next section: Sampling from the Unit Sphere
+
+
+\section{Section}
+
 
 The statement of the theorem is rather interesting: the bounds we get on
 distortion are in terms of $\epsilon$ which is in turn bounded in terms of $k$
@@ -98,7 +111,6 @@ of length $k$ from some Gaussian distribution. Then pick $n-1$ additional random
 unit vectors that are orthogonal to this first vector: left-multiplying a vector
 in $n$ dimensions by this new matrix yields a point in $\mathbb{R}^k$.
 
--- Statement of the theorem
 -- Contextualization of variables
 -- Intuition, when projected length is tightly concentrated around mean
 
