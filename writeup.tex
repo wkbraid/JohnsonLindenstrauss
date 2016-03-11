@@ -110,10 +110,7 @@ in $n$ dimensions by this new matrix yields a point in $\mathbb{R}^k$.
 -- rotational invariance, linear scaling, allows us to analyse a random vector.
 
 \subsection{Sampling from the Unit Sphere}
-
-Doing this is not exactly obvious, we have provided a few ways
-(Figure~\ref{fig:spheres}) that one might sample from the unit sphere $S^n$, and
-the obvious ways aren't uniform!
+It turns out that sampling a random unit vector from the unit sphere is not exactly obvious. We have provided a few ways (Figure~\ref{fig:spheres}) that one might sample from the unit sphere $S^d$, and some obvious ways aren't uniform!
 
 \begin{figure}
   \begin{center}
@@ -126,19 +123,9 @@ the obvious ways aren't uniform!
   \label{fig:spheres}
 \end{figure}
 
--- Why it might be difficult
--- first attempt using polar coordinates
-
--- Key realization: We can impose constraints *after* sampling
-
-   -- all we need is a rotationally symmetric distribution, so we can ``rotate
-   it back''
-
--- Enter gaussians, why do they work.
-
--- Other key advantage: Now each component is i.i.d (see Figure~\ref{fig:bounds})
-
-    -- Makes projection very easy to reason about.
+An important insight here is that we do not have to sample from the sphere directly, instead we can sample from ther larger space of $\R^d$ and normalize the result to obtain a point on the sphere. All we need is a rotationally symmetric distribution, so that the result of normalization will be uniform. As it happens this is easy to provide, if each coordinate $X_i$ is sampled independently from the standard normal distribution then we can write the joint pdf
+\[ p(X_1,X_2,...,X_d) = \prod_{i} p(X_i) = c \times \exp(\frac{1}{2} (X_1^2 + X_2^2 + ... X_d^2)) \]
+For some constant $c$. Since this can be re-written as a function of the length of $(X_1,X_2,...,X_d)$ the distribution must be symmetric. This also has the advantage that each component is sampled identically and independently at random, allowing us to use Chernoff bounds to analyse the resulting vector (see Figure~\ref{fig:bounds}).
 
     \begin{figure}[H]
       So you're sampling from some distribution, and you want to know how fast
@@ -156,38 +143,7 @@ the obvious ways aren't uniform!
       \label{fig:bounds}
     \end{figure}
 
-\section{Large Deviation Bounds}
 
--- Remains to analyse the result of the projetion
-
--- Probabilistic method, low failure for each distance, take union bound, repeat
-until success to get
-
--- randomized algorithms
-
-\emph{Q:} how much detail into math do we want to give?
-\emph{A:} Not much, I don't think this is the interesting part of the paper
-
-
-\section{Comparison to other Approaches}
-TODO: we may not need this; we already have a lot of pages covered...
-
--- what kinds of properties we might be interested in preserving
--- the role of randomness (i.e. avoiding selecting features, ease of use, streaming computation)
-
-
-\section{Initial notes}
-
-Dimensionality reduction is an important 
-- why we care about DR
-- in particular, this version is pretty cool
-
-- rotational invariance of the joint distribution, 
-- how do we go about vvv 
-- sampling from a smooth surface
-- are gaussians always the answer?
-showing why the gaussian stuff is rotationally invariant
-- talking about chernoff bounds
 \bibliography{refs}{}
 \bibliographystyle{plain}
 
