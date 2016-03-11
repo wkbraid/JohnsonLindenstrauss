@@ -90,15 +90,7 @@ Measures how the distance between the two points changes under the projection. B
 
 Here $\epsilon$ is a tolerance parameter which captures how much distortion we are willing to accept for any pair of points. If we fix $\epsilon = 0.1$ then this theorem says that we can represent a dataset of $n$ points in about $1000 \ln n$ dimensions with no more than 10\% distortion on any pair. At first it may seem surprising that the target dimension $k$ is bounded by $n$ and \textbf{not} the source dimension $d$. One view is that since we only concerned with \textit{relative} distances between points we can always rotate our data to fit in $n$ dimensions, so all we need is to produce a map $\R^n \arr \R^k$. A more subtle perspective comes from answering the question: What does it mean that this map can be found in randomized polynomial time?
 
-This paper presents a simple \textit{randomized} algorithm: choose a random projection and check whether the distortion is bounded, keep trying until it works. The chance that something goes wrong is related to the number of pairwise distances 
-
-
--- summarize algorithm
-
--- conclude that we need to analyze what happens when a vector is projected to a random subspace
-
--- Start next section: Sampling from the Unit Sphere
-
+This paper presents a simple \textit{randomized} algorithm: choose a random projection and check whether the distortion is bounded, keep trying until it works. Using a union bound the probability of failure is proportional to the number of pairwise distances, so in order to bound this probability we give constraints in terms of $n$.
 
 \section{Section}
 
