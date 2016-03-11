@@ -56,23 +56,59 @@
 %==============================================================================
 \maketitle
 \section{Introduction}
-In data analysis we often want to produce summary information to concisely describe \textit{static} and \textit{global} properties of a large data set. However, for some operations most if not all of the structure in the original data is needed; consider removing outliers from a dataset, or finding the nearest neighbor to a given point. Many queries like this are either \textit{dynamic} and change the shape of the data, or \textit{local} and need access to only part of the data. To perform these operations efficiently we need to reduce the size of our representation, while preserving the structure of our data, an example of this is \textbf{Dimensionality Reduction}.
+
+In data analysis we often want to produce summary information to concisely
+describe \textit{static} and \textit{global} properties of a large data set
+(e.g.~the frequency moments).  However, for some operations most if not all of
+the structure in the original data is needed; consider removing outliers from a
+dataset, or finding the nearest neighbor to a given point. Many queries like
+this are either \textit{dynamic} and change the shape of the data, or
+\textit{local} and need access to only part of the data. To perform these
+operations efficiently we need to reduce the size of our representation, while
+preserving some of the structure of our data, an example of this is
+\textbf{Dimensionality Reduction}.
 
 \section{Dealing with High Dimensions}
-Many data sets, such as a collection of photographs, can be described formally as a set of points in euclidean space; with each coordinate storing the intensity of a given pixel. In low dimensions we can often differentiate between datasets which behave well under projection, and datasets which do not. Consider the two figures below:
+
+Many data sets, such as a collection of photographs, can be described formally
+as a set of points in euclidean space; with each coordinate storing the
+intensity of a given pixel. In low dimensions we can often differentiate between
+datasets which behave well under projection, and datasets which do not. Consider
+the two figures below:
 
 \begin{center}
     \includegraphics[trim=0 280 0 280, clip, width=\textwidth]{2dplots.pdf}
 \end{center}
 
-The set on the left can be represented almost faithfully by projecting onto the one dimensional space represented by the central line, relative distances will be roughly preserved with the largest deviation near the center of the bounding ellipse. On the right, however, there is no good line to project onto; no matter what we choose we will have to collapse many disperse points to the same neighborhood. 
+The set on the left can be represented almost faithfully by projecting onto the
+one dimensional space represented by the central line, relative distances will
+be roughly preserved with the largest deviation near the center of the bounding
+ellipse. However, note that this technique by construction throws out the
+information of how far away certain points are from this line.
 
-The surprising result of Johnson and Lindenstrauss \cite{oldpaper} is that in high enough dimensions there is no such distinction. In fact, by projecting onto a \textit{random} subspace we can reduce the dimension without significantly distorting pairwise distance.
+Worse still, on the right there is \emph{no} good line to project onto; no
+matter what we choose we will have to collapse many disperse points to the same
+neighborhood.
+
+The surprising result of Johnson and Lindenstrauss~\cite{oldpaper} is that in
+high enough dimensions there is no such distinction. In fact, by projecting onto
+a \textit{random} subspace we can reduce the dimension without significantly
+distorting pairwise distance.
 
 \section{The Johnson Lindenstrauss Theorem}
-Formally we are interested in the distortion of \textit{pairwise distance}. If the map $f : \R^d \arr \R^k$ is a projection from a high dimensional space $\R^d$ to a space of lower dimension $\R^k$ then for any two points $u, v \in \R^d$ the ratio
+Formally we are interested in the distortion of \textit{pairwise distance}. If
+the map $f : \R^d \arr \R^k$ is a projection from a high dimensional space
+$\R^d$ to a space of lower dimension $\R^k$ then for any two points $u, v \in
+\R^d$ the ratio
 \[ \frac{\| f(u) - f(v) \|^2}{\| u - v \|^2} \]
-Measures how the distance between the two points changes under the projection. By capturing pairwise distances we can imagine preserving a rigid skeleton of our data from which further information such as the angles between points can be deduced. Moreover, distortion is indepedent of the absolute scale and position of the data, which allows both large and small features such as ``clumps'' to be preserved. The main theorem presented in this paper \cite{mainpaper} is that we can choose $k$ large enough such that \textit{no} pairwise distance will be distored by more than a constant factor.
+Measures how the distance between the two points changes under the projection.
+By capturing pairwise distances we can imagine preserving a rigid skeleton of
+our data from which further information such as the angles between points can be
+deduced. Moreover, distortion is indepedent of the absolute scale and position
+of the data, which allows both large and small features such as ``clumps'' to be
+preserved. The main theorem presented in this paper~\cite{mainpaper} is that we
+can choose $k$ large enough such that \textit{no} pairwise distance will be
+distored by more than a constant factor.
 
 \begin{Thm}
   For any $0 \leq \epsilon \leq 1$, and any integer $n$, let $k$ be a positive
@@ -92,34 +128,50 @@ Here $\epsilon$ is a tolerance parameter which captures how much distortion we a
 
 This paper presents a simple \textit{randomized} algorithm: choose a random projection and check whether the distortion is bounded, keep trying until it works. Using a union bound the probability of failure is proportional to the number of pairwise distances, so in order to bound this probability we give constraints in terms of $n$.
 
-\section{Section}
-
+\section{The Algorithm}
 
 The statement of the theorem is rather interesting: the bounds we get on
 distortion are in terms of $\epsilon$ which is in turn bounded in terms of $k$
 and $n$ but not $d$. This is the first clue that we are dealing with some sort
-of random algorithm. This algorithm is roughly the following: pick a unit vector
+of random algorithm: the theorem says that ``most'' of the dimensions in a set
+of points are superfluous, so we should be able to just pick some $k$-size
+subset of coordinates of the points in question. However, the $\mathfrak{DEVIL}$
+arranging our points ahead of time to make those $k$ coordinates the wrong ones
+to pick! The solution is to pick them randomly. We do this by picking a random
+rotation (i.e.~pick a member of $\textit{SO}_d$ uniformly at random)  of the
+data, and then taking the first $k$ coordinates of the resulting dataset.
+Importantly, this is equivalent to projecting the points onto a random
+$k$-dimensional subspace.
+
+This gives rise to the following algorithm:
+
+This algorithm is roughly the following: pick a unit vector
 of length $k$ from some Gaussian distribution. Then pick $n-1$ additional random
-unit vectors that are orthogonal to this first vector: left-multiplying a vector
+unit vectors that are orthogonal to the previous vectors: left-multiplying a vector
 in $n$ dimensions by this new matrix yields a point in $\mathbb{R}^k$.
 
--- Contextualization of variables
--- Intuition, when projected length is tightly concentrated around mean
+% -- Contextualization of variables
+% -- Intuition, when projected length is tightly concentrated around mean
 
--- Intuition for a random projection
--- rotational invariance, linear scaling, allows us to analyse a random vector.
+% -- Intuition for a random projection
+% -- rotational invariance, linear scaling, allows us to analyse a random vector.
 
 \subsection{Sampling from the Unit Sphere}
 It turns out that sampling a random unit vector from the unit sphere is not exactly obvious. We have provided a few ways (Figure~\ref{fig:spheres}) that one might sample from the unit sphere $S^d$, and some obvious ways aren't uniform!
 
-\begin{figure}
+\begin{figure}[H]
   \begin{center}
     \includegraphics[width=0.9\linewidth]{spheres.png}
   \end{center}
 
   \caption{Randomly sampling a sphere with spherical coordinates, cubical
-    coordinates, and a normal distribution. Note that only a normal distribution
-    is free of spots with greater and lower density}
+    coordinates, and a normal distribution. Intuitively, the spherical
+    coordinates are sampling which horizontal circular cross-section to sample
+    from at uniform, and then uniformly sampling from a point on that circle.
+    This is not uniform overall because circles closer to the poles are smaller
+    than ones near the equator of the sphere. Note that only a normal distribution
+    is free of spots with greater and lower density.}
+
   \label{fig:spheres}
 \end{figure}
 
