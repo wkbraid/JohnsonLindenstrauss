@@ -23,7 +23,7 @@
 \author{Eli Rosenthal \and Will Kochanski}
 \date{}
 
-\setlength{\parindent}{0pt}
+\setlength{\parindent}{0.15cm}
 % }}}
 
 %==============================================================================
@@ -124,31 +124,41 @@ distored by more than a constant factor.
   Furthermore, this map can be found in randomized polynomial time.
 \end{Thm}
 
-Here $\epsilon$ is a tolerance parameter which captures how much distortion we are willing to accept for any pair of points. If we fix $\epsilon = 0.1$ then this theorem says that we can represent a dataset of $n$ points in about $1000 \ln n$ dimensions with no more than 10\% distortion on any pair. At first it may seem surprising that the target dimension $k$ is bounded by $n$ and \textbf{not} the source dimension $d$. One view is that since we only concerned with \textit{relative} distances between points we can always rotate our data to fit in $n$ dimensions, so all we need is to produce a map $\R^n \arr \R^k$. A more subtle perspective comes from answering the question: What does it mean that this map can be found in randomized polynomial time?
+Here $\epsilon$ is a tolerance parameter which captures how much distortion we
+are willing to accept for any pair of points. If we fix $\epsilon = 0.1$ then
+this theorem says that we can represent a dataset of $n$ points in about $1000
+\ln n$ dimensions with no more than 10\% distortion on any pair. At first it may
+seem surprising that the target dimension $k$ is bounded by $n$ and \textbf{not}
+the source dimension $d$. One view is that since we only concerned with
+\textit{relative} distances between points we can always rotate our data to fit
+in $n$ dimensions, so all we need is to produce a map $\R^n \arr \R^k$. A more
+subtle perspective comes from answering the question: What does it mean that
+this map can be found in randomized polynomial time?
 
-This paper presents a simple \textit{randomized} algorithm: choose a random projection and check whether the distortion is bounded, keep trying until it works. Using a union bound the probability of failure is proportional to the number of pairwise distances, so in order to bound this probability we give constraints in terms of $n$.
+This paper presents a simple \textit{randomized} algorithm: choose a random
+projection and check whether the distortion is bounded, keep trying until it
+works. Using a union bound the probability of failure is proportional to the
+number of pairwise distances, so in order to bound this probability we give
+constraints in terms of $n$.
 
-\section{The Algorithm}
+\subsection{Random Projections?}
 
-The statement of the theorem is rather interesting: the bounds we get on
-distortion are in terms of $\epsilon$ which is in turn bounded in terms of $k$
-and $n$ but not $d$. This is the first clue that we are dealing with some sort
-of random algorithm: the theorem says that ``most'' of the dimensions in a set
-of points are superfluous, so we should be able to just pick some $k$-size
-subset of coordinates of the points in question. However, the $\mathfrak{DEVIL}$
-arranging our points ahead of time to make those $k$ coordinates the wrong ones
-to pick! The solution is to pick them randomly. We do this by picking a random
-rotation (i.e.~pick a member of $\textit{SO}_d$ uniformly at random)  of the
-data, and then taking the first $k$ coordinates of the resulting dataset.
+The theorem says that ``most'' of the dimensions in a set of points are
+superfluous, so we should be able to just pick some $k$-size subset of
+coordinates of the points in question. However, the $\mathfrak{DEVIL}$ arranging
+our points ahead of time could make those $k$ coordinates the wrong ones to
+pick! The solution is to pick a random subspace. We do this by picking a random
+rotation (i.e.~pick point on the unit sphere uniformly at random)
+of the data, and then taking the first $k$ coordinates of the resulting dataset.
 Importantly, this is equivalent to projecting the points onto a random
 $k$-dimensional subspace.
 
-This gives rise to the following algorithm:
+% This gives rise to the following algorithm:
 
-This algorithm is roughly the following: pick a unit vector
-of length $k$ from some Gaussian distribution. Then pick $n-1$ additional random
-unit vectors that are orthogonal to the previous vectors: left-multiplying a vector
-in $n$ dimensions by this new matrix yields a point in $\mathbb{R}^k$.
+% This algorithm is roughly the following: pick a unit vector
+% of length $k$ from some Gaussian distribution. Then pick $n-1$ additional random
+% unit vectors that are orthogonal to the previous vectors: left-multiplying a vector
+% in $n$ dimensions by this new matrix yields a point in $\mathbb{R}^k$.
 
 % -- Contextualization of variables
 % -- Intuition, when projected length is tightly concentrated around mean
@@ -157,9 +167,20 @@ in $n$ dimensions by this new matrix yields a point in $\mathbb{R}^k$.
 % -- rotational invariance, linear scaling, allows us to analyse a random vector.
 
 \subsection{Sampling from the Unit Sphere}
-It turns out that sampling a random unit vector from the unit sphere is not exactly obvious. We have provided a few ways (Figure~\ref{fig:spheres}) that one might sample from the unit sphere $S^d$, and some obvious ways aren't uniform!
+It turns out that sampling a random unit vector from the unit sphere is not
+exactly obvious. We have provided a few ways (Figure~\ref{fig:spheres}) that one
+might sample from the unit sphere $S^d$, and some obvious ways aren't uniform!
+% =======
+% Sampling uniformly from the unit sphere is not exactly obvious, we have provided
+% a few ways in Figure~\ref{fig:spheres} that one might sample from the unit
+% sphere $S^n$, and the obvious ways aren't uniform! The way that actually works
+% is to take the norm of $k$ i.i.d $\mathcal{N}(0,1)$ variables\footnote{The fact
+%   that these are i.i.d means we get to use Chernoff bounds, computer scientists'
+% favorite root vegetable!}, the authors in~\cite{mainpaper} observe that this is
+% obvious, so I'm sure we don't have to explain it.
+% >>>>>>> added rutabaga
 
-\begin{figure}[H]
+\begin{figure}[p]
   \begin{center}
     \includegraphics[width=0.9\linewidth]{spheres.png}
   \end{center}
@@ -175,16 +196,26 @@ It turns out that sampling a random unit vector from the unit sphere is not exac
   \label{fig:spheres}
 \end{figure}
 
-An important insight here is that we do not have to sample from the sphere directly, instead we can sample from ther larger space of $\R^d$ and normalize the result to obtain a point on the sphere. All we need is a rotationally symmetric distribution, so that the result of normalization will be uniform. As it happens this is easy to provide, if each coordinate $X_i$ is sampled independently from the standard normal distribution then we can write the joint pdf
+An important insight here is that we do not have to sample from the sphere
+directly, instead we can sample from the larger space of $\R^d$ and normalize
+the result to obtain a point on the sphere. All we need is a rotationally
+symmetric distribution, so that the result of normalization will be uniform. As
+it happens this is easy to provide, if each coordinate $X_i$ is sampled
+independently from the standard normal distribution then we can write the joint
+pdf
 \[ p(X_1,X_2,...,X_d) = \prod_{i} p(X_i) = c \times \exp(\frac{1}{2} (X_1^2 + X_2^2 + ... X_d^2)) \]
-For some constant $c$. Since this can be re-written as a function of the length of $(X_1,X_2,...,X_d)$ the distribution must be symmetric. This also has the advantage that each component is sampled identically and independently at random, allowing us to use Chernoff bounds to analyse the resulting vector (see Figure~\ref{fig:bounds}).
+For some constant $c$. Since this can be re-written as a function of the length
+of $(X_1,X_2,...,X_d)$ the distribution must be symmetric. This also has the
+advantage that each component is sampled identically and independently at
+random, allowing us to use Chernoff bounds to analyse the resulting vector (see
+Figure~\ref{fig:bounds}).
 
     \begin{figure}[H]
       So you're sampling from some distribution, and you want to know how fast
       you converge to ground truth.
 
       \begin{tabular}{lll}
-        What do you know? & Distribution & Tail bound\\
+        What do you know? & Which root vegetable? & Tail bound\\
         \hline
         I know something about the mean..  & Markov! & Linear \\
         I know something about the variance..  & Chebyshev! & quadratic/polynomial\\
